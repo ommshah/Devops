@@ -17,14 +17,14 @@ pipeline {
             steps {
                 echo 'Packaging...'
                 
-                sh 'docker build -t my-java-app .'
+                bat 'docker build -t my-java-app .'
             }
         }
         stage('Deploy') {
             steps {
                 echo 'Deploying...'
                 
-                sh 'docker push my-java-app'
+                bat 'docker push my-java-app'
             }
         }
     }
