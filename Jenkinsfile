@@ -1,30 +1,21 @@
 pipeline {
     agent any
+    tools {
+        maven 'Maven 3.9.9'
+    }
+   
     stages {
-        stage('Build') {
+        stage('Build Maven') {
             steps {
-                echo 'Building...'
-                
+               checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/ommshah/Devops/tree/main']])
+               sh 'mvn clean install'
             }
         }
-        stage('Test') {
-            steps {
-                echo 'Testing...'
-                
-            }
-        }
-        stage('Package') {
-            steps {
-                echo 'Packaging...'
-                
-                bat 'docker build -t my-java-app .'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying...'
-                
-                bat 'docker push my-java-app'
+        stage('Build docker image'){
+            steps{
+                script{
+                    sh 'docker build -t omshah07/devops-integration .'
+                }
             }
         }
     }
